@@ -64,14 +64,16 @@ local function givePlayerMission()
         AddBlipForEntity(MissionPedToKill)
 
         -- Make the ped play an animation
-        if (mission.playingScenario and not mission.pedDrivingVehicle) then
+        if (not mission.playingScenario == "" and mission.pedDrivingVehicle == "") then
             Citizen.CreateThread(function()
                 TaskStartScenarioInPlace(MissionPedToKill, mission.playingScenario, -1)
             end)
         end
 
         -- Make the ped drive a vehicle
-        if mission.pedDrivingVehicle then
+        if not mission.pedDrivingVehicle == "" then
+            print("vehicule la")
+            print(mission.pedDrivingVehicle)
             if not mission.pedNeedsToDriveFast then
                 mission.pedNeedsToDriveFast = false
             end
@@ -109,13 +111,18 @@ local function givePlayerMission()
         -- Show a marker above the NPC to kill
         Citizen.CreateThread(function()
             while true do
-                Citizen.Wait(1)
+                Citizen.Wait(100)
+                print("on est dans la boucle")
 
                 if (GetEntityHealth(MissionPedToKill) > 0) then
+                    print('le frerot est vivant')
                     local npcCoords = GetEntityCoords(MissionPedToKill)
+                    print(npcCoords.x, npcCoords.y, npcCoords.z)
 
                     -- Calcul de la distance entre le joueur et le NPC
                     local distance = #(npcCoords - GetEntityCoords(GetPlayerPed(-1)))
+
+                    print(distance)
 
                     -- Vérifiez si le NPC est dans une certaine plage de distance pour afficher le marqueur
                     if distance < 20.0 then
