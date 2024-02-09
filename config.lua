@@ -17,10 +17,10 @@ ConfigJob.Missions            = {
         name = 'Kill the target', -- The name of the mission.
         reward = 1000,            -- The reward for the mission.
         PedPosition = {           -- The position of the target.
-            x = -1923.5,
-            y = 558.84,
-            z = 114.83,
-            h = 250.77,
+            x = -1205.12,
+            y = -1560.34,
+            z = 4.61,
+            h = 20.85,
         },
         IsPedAggressive = true,                   -- Set to true if the target has to be aggressive, otherwise he'll run away.
         PedName = 'g_m_y_famfor_01',              -- The model for the target.
