@@ -64,7 +64,7 @@ local function givePlayerMission()
         AddBlipForEntity(MissionPedToKill)
 
         -- Make the ped play an animation
-        if (not mission.playingScenario == "" and mission.pedDrivingVehicle == "") then
+        if mission.playingScenario and mission.playingScenario ~= "" and (not mission.pedDrivingVehicle or mission.pedDrivingVehicle == "") then
             Citizen.CreateThread(function()
                 TaskStartScenarioInPlace(MissionPedToKill, mission.playingScenario, -1)
             end)
