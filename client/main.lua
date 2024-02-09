@@ -71,8 +71,7 @@ local function givePlayerMission()
         end
 
         -- Make the ped drive a vehicle
-        if not mission.pedDrivingVehicle == "" then
-            print(mission.pedDrivingVehicle)
+        if mission.pedDrivingVehicle ~= "" and mission.pedDrivingVehicle ~= nil then
             if not mission.pedNeedsToDriveFast then
                 mission.pedNeedsToDriveFast = false
             end
@@ -113,11 +112,8 @@ local function givePlayerMission()
             while true do
                 if (GetEntityHealth(MissionPedToKill) > 0) then
                     local npcCoords = GetEntityCoords(MissionPedToKill)
-                    print(npcCoords.x, npcCoords.y, npcCoords.z)
 
                     local distance = #(npcCoords - GetEntityCoords(GetPlayerPed(-1)))
-
-                    print(distance)
 
                     if distance < 20.0 then
                         interval = 100
