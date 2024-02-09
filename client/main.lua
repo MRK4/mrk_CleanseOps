@@ -72,7 +72,6 @@ local function givePlayerMission()
 
         -- Make the ped drive a vehicle
         if not mission.pedDrivingVehicle == "" then
-            print("vehicule la")
             print(mission.pedDrivingVehicle)
             if not mission.pedNeedsToDriveFast then
                 mission.pedNeedsToDriveFast = false
@@ -110,32 +109,30 @@ local function givePlayerMission()
 
         -- Show a marker above the NPC to kill
         Citizen.CreateThread(function()
+            local interval = 1
             while true do
-                Citizen.Wait(100)
-                print("on est dans la boucle")
-
                 if (GetEntityHealth(MissionPedToKill) > 0) then
-                    print('le frerot est vivant')
                     local npcCoords = GetEntityCoords(MissionPedToKill)
                     print(npcCoords.x, npcCoords.y, npcCoords.z)
 
-                    -- Calcul de la distance entre le joueur et le NPC
                     local distance = #(npcCoords - GetEntityCoords(GetPlayerPed(-1)))
 
                     print(distance)
 
-                    -- Vérifiez si le NPC est dans une certaine plage de distance pour afficher le marqueur
                     if distance < 20.0 then
+                        interval = 100
                         local x, y, z = table.unpack(npcCoords)
-                        z = z + 1.1 -- Ajustez la hauteur du marqueur selon vos besoins
+                        z = z + 1.1
 
-                        -- Affichez le marqueur au-dessus du NPC
                         DrawMarker(20, x, y, z, 0, 0, 0, 0, 0, 0, 0.25, 0.25, -0.25, 255, 0, 0, 200, true, true, 2,
                             nil,
                             nil,
                             false)
+                    else
+                        interval = 1
                     end
                 end
+                Citizen.Wait(interval)
             end
         end)
 
