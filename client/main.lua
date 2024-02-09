@@ -19,6 +19,23 @@ local debug = ConfigJob.debug
 
 local hasActiveMission = false
 
+local function drawText(text, position)
+    if not type(position) == "string" then position = "left" end
+    SendNUIMessage({
+        action = 'DRAW_TEXT',
+        data = {
+            text = text,
+            position = position
+        }
+    })
+end
+
+local function hideText()
+    SendNUIMessage({
+        action = 'HIDE_TEXT',
+    })
+end
+
 local function givePlayerMission()
     hasActiveMission = true
     -- select a random mission
@@ -200,30 +217,31 @@ Citizen.CreateThread(function()
             distance = 1.5,
         })
     elseif useTarget == false then
-        exports['qb-target']:AddCircleZone('mrk_cleanseops', vector3(NpcPosition.x, NpcPosition.y, NpcPosition.z), 2.5, {
-            name = 'mrk_cleanseops',
-            debugPoly = debug,
-        }, {
-            options = {
-                {
-                    num = 1,
-                    type = "client",
-                    icon = 'fa-solid fa-people-robbery',
-                    label = Lang['buy_mission'] .. MissionsCost,
-                    action = function()
+        Citizen.CreateThread(function()
+            while true do
+                Citizen.Wait(0)
+                local playerPed = GetPlayerPed(-1)
+                local coords = GetEntityCoords(playerPed)
+                local distance = GetDistanceBetweenCoords(coords, NpcPosition.x, NpcPosition.y, NpcPosition.z, true)
+
+                if distance < 2.0 then
+                    TriggerEvent('qb-core:client:DrawText', Lang['buy_mission_no_target'] .. MissionsCost, 'left')
+                    if IsControlJustReleased(0, 38) then
                         if hasActiveMission == false then
                             -- Start the mission
                             TriggerServerEvent('mrk_cleanseops:buyMission', MissionsCost)
                         else
                             TriggerEvent('QBCore:Notify', Lang['already_have_mission'], 'error')
                         end
-                    end,
-                }
-            },
-            distance = 2.5,
-        })
+                    end
+                else
+                    TriggerEvent('qb-core:client:HideText')
+                end
+            end
+        end)
     end
 end)
+
 
 Citizen.CreateThread(function()
     blip = AddBlipForCoord(NpcPosition.x, NpcPosition.y, NpcPosition.z)

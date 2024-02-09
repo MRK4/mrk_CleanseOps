@@ -129,6 +129,7 @@ ConfigJob.Missions            = {
 
 ConfigJob.Lang                = {
     ['buy_mission'] = 'Buy a mission for $',
+    ['buy_mission_no_target'] = 'Press E to buy a mission for $',
     ['not_enough_money'] = 'You don\'t have enough cash.',
     ['mission_bought'] = 'You have purchased a mission.',
     ['gps_set'] = '"I put the address on your GPS. Go kick his ass."',
